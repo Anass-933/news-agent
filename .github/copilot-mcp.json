@@ -1,0 +1,8 @@
+{
+  "servers": {
+    "longbridge": {
+      "type": "url",
+      "url": "https://api.mcp.github.com/oss/v0.1/servers/com.longbridge%2Fmcp/versions/latest"
+    }
+  }
+}
