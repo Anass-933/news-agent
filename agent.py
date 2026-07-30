@@ -44,7 +44,8 @@ MAX_PER_FEED = 20
 # ---------------------------------------------------------------------------
 
 def _strip_html(text: str) -> str:
-    text = re.sub(r"<[^>]+>", " ", text)
+    # Bound tag length to avoid polynomial backtracking on malformed input
+    text = re.sub(r"<[^>]{0,200}>", " ", text)
     return unescape(text).strip()
 
 
