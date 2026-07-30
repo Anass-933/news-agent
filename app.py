@@ -1,7 +1,9 @@
 import os
 
 import feedparser
-from flask import Flask, render_template, request
+from flask import Flask, jsonify, render_template, request
+
+import agent as news_agent
 
 app = Flask(__name__)
 
@@ -46,6 +48,21 @@ def index():
         feeds=list(FEEDS.keys()),
         current_source=source,
     )
+
+
+@app.route("/agent")
+def agent_page():
+    return render_template("agent.html", feeds=list(FEEDS.keys()))
+
+
+@app.route("/api/agent", methods=["POST"])
+def agent_api():
+    data = request.get_json(force=True, silent=True) or {}
+    query = (data.get("query") or "").strip()
+    if not query:
+        return jsonify({"message": "Please enter a query.", "articles": [], "intent": "error"})
+    result = news_agent.run(query)
+    return jsonify(result)
 
 
 if __name__ == "__main__":
